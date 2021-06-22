@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.*
 import com.jokomanza.roomdemo.data.model.LoginTableModel
 
-@Database(entities = [LoginTableModel::class], version = 1)
+@Database(entities = [LoginTableModel::class], version = 1, exportSchema = false)
 abstract class LoginDatabase : RoomDatabase() {
 
     abstract fun loginDao() : DAOAccess

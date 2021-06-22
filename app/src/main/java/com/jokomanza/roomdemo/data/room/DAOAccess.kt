@@ -11,7 +11,7 @@ import com.jokomanza.roomdemo.data.model.LoginTableModel
 interface DAOAccess {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun InsertData(loginTableModel: LoginTableModel)
+    fun InsertData(loginTableModel: LoginTableModel)
 
     @Query("SELECT * FROM Login WHERE Username =:username")
     fun getLoginDetails(username: String?) : LiveData<LoginTableModel>
