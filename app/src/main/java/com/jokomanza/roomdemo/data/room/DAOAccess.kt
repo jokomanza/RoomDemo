@@ -17,6 +17,6 @@ interface DAOAccess {
     fun getLoginDetails(username: String?) : LiveData<LoginTableModel>
 
     @Query("SELECT * FROM Login")
-    fun getAllLogin(): List<LoginTableModel>
+    fun getAllLogin(): LiveData<List<LoginTableModel>>
 
 }

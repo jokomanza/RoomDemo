@@ -11,11 +11,12 @@ import kotlinx.coroutines.launch
 class LoginRepository {
     companion object {
 
-        var loginDatabase: LoginDatabase? = null
+        private var loginDatabase: LoginDatabase? = null
 
-        var loginTableModel: LiveData<LoginTableModel>? = null
+        private var loginTableModel: LiveData<LoginTableModel>? = null
+        private var loginListTableModel: LiveData<List<LoginTableModel>>? = null
 
-        fun initializeDB(context: Context) : LoginDatabase {
+        private fun initializeDB(context: Context) : LoginDatabase {
             return LoginDatabase.getDataseClient(context)
         }
 
@@ -37,6 +38,15 @@ class LoginRepository {
             loginTableModel = loginDatabase!!.loginDao().getLoginDetails(username)
 
             return loginTableModel
+        }
+
+        fun getLogins(context: Context) : LiveData<List<LoginTableModel>>? {
+
+            loginDatabase = initializeDB(context)
+
+            loginListTableModel = loginDatabase!!.loginDao().getAllLogin()
+
+            return loginListTableModel
         }
 
     }

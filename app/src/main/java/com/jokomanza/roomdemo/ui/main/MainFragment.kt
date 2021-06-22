@@ -1,19 +1,17 @@
 package com.jokomanza.roomdemo.ui.main
 
-import androidx.lifecycle.ViewModelProvider
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.liveData
-import com.jokomanza.roomdemo.MainActivity
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.jokomanza.roomdemo.R
-import com.jokomanza.roomdemo.data.model.LoginTableModel
-import com.jokomanza.roomdemo.data.room.LoginDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.android.synthetic.main.main_fragment.*
+import java.time.Instant
 
 class MainFragment : Fragment() {
 
@@ -23,20 +21,27 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.getLoginDetails(requireContext(), "admin")?.observe(viewLifecycleOwner) {
+        viewModel.getLogins(requireContext())?.observe(viewLifecycleOwner) {
             Log.d("MainFragment", "onActivityCreated: $it")
             when (it) {
                 null -> viewModel.insertData(requireContext(), "admin", "admin")
             }
+        }
+
+        message.setOnClickListener {
+            viewModel.insertData(requireContext(), Instant.now().toString(), Instant.now().toString())
         }
     }
 
